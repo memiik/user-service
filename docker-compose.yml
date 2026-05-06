@@ -1,0 +1,46 @@
+version: "3.9"
+
+networks:
+  cassandra-net:
+    driver: bridge
+
+services:
+  apache-cassandra:
+    image: cassandra:5.0.8
+    container_name: cassandra-user-service
+    ports:
+      - "9042:9042"
+    networks:
+      - cassandra-net
+    environment:
+      - CASSANDRA_RPC_ADDRESS=0.0.0.0
+      - CASSANDRA_LISTEN_ADDRESS=auto
+      - CASSANDRA_CLUSTER_NAME=mira-cluster
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=my-datacenter-1
+      - MAX_HEAP_SIZE=512M
+      - HEAP_NEWSIZE=128M
+    volumes:
+      - cassandra-user-service-node:/var/lib/cassandra:rw
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool status | grep -E '^UN'"]
+      interval: 30s
+      start_period: 90s
+      timeout: 10s
+      retries: 5
+
+  cassandra-init:
+    image: cassandra:5.0.8
+    depends_on:
+      apache-cassandra:
+        condition: service_healthy
+    networks:
+      - cassandra-net
+    volumes:
+      - ./docker/cassandra/init.cql:/init.cql:ro
+    command: cqlsh apache-cassandra -f /init.cql
+    restart: on-failure
+
+volumes:
+  cassandra-user-service-node:
