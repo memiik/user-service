@@ -13,8 +13,8 @@ public class FollowingByUser {
     public FollowingByUser() {
     }
 
-    public FollowingByUser(FollowingKey followingKey) {
-        this.key = followingKey;
+    public FollowingByUser(FollowingKey key) {
+        this.key = key;
     }
 
     public FollowingKey getKey() {
