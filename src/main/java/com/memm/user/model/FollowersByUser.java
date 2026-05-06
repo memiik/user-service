@@ -8,20 +8,20 @@ import org.springframework.data.cassandra.core.mapping.Table;
 public class FollowersByUser {
 
     @PrimaryKey
-    private FollowerKey followerKey;
+    private FollowerKey key;
 
     public FollowersByUser() {
     }
 
     public FollowersByUser(FollowerKey followerKey) {
-        this.followerKey = followerKey;
+        this.key = followerKey;
     }
 
-    public FollowerKey getFollowerKey() {
-        return followerKey;
+    public FollowerKey getKey() {
+        return key;
     }
 
-    public void setFollowerKey(FollowerKey followerKey) {
-        this.followerKey = followerKey;
+    public void setKey(FollowerKey key) {
+        this.key = key;
     }
 }
