@@ -1,9 +1,8 @@
 package com.memm.user.repository;
 
 import com.memm.user.model.FollowingByUser;
+import com.memm.user.model.key.FollowingKey;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 
-import java.util.UUID;
-
-public interface FollowingByUserRepository extends CassandraRepository<FollowingByUser, UUID> {
+public interface FollowingByUserRepository extends CassandraRepository<FollowingByUser, FollowingKey> {
 }
